@@ -11,25 +11,35 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #030712; /* Un gris/azul extremadamente oscuro, más elegante que el negro puro */
+            background-color: #030712; 
         }
         .code-font {
             font-family: 'JetBrains Mono', monospace;
         }
-        /* Animación suave para los orbes de luz del fondo */
         @keyframes pulse-slow {
             0%, 100% { transform: scale(1); opacity: 0.2; }
             50% { transform: scale(1.1); opacity: 0.3; }
         }
+        /* Ajustamos la animación base para mantener la fuerza de la opacidad en móvil */
+        @keyframes pulse-slow-mobile {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+        }
         .animate-pulse-slow {
-            animation: pulse-slow 8s infinite ease-in-out;
+            animation: pulse-slow-mobile 8s infinite ease-in-out;
+        }
+        @media (min-width: 768px) {
+            .animate-pulse-slow {
+                animation: pulse-slow 8s infinite ease-in-out;
+            }
         }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden relative selection:bg-violet-500/30 selection:text-violet-200">
 
-    <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-br from-violet-600 to-purple-800 blur-[120px] opacity-20 animate-pulse-slow pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-gradient-to-br from-cyan-500 to-emerald-600 blur-[120px] opacity-20 animate-pulse-slow pointer-events-none" style="animation-delay: 4s;"></div>
+    <!-- Orbes de Luz ajustados para mayor visibilidad en móvil -->
+    <div class="absolute top-0 md:top-[-10%] left-[-15%] md:left-[-10%] w-96 h-96 md:w-[50vw] md:h-[50vw] rounded-full bg-gradient-to-br from-violet-600 to-purple-800 blur-[80px] md:blur-[120px] animate-pulse-slow pointer-events-none"></div>
+    <div class="absolute bottom-[5%] md:bottom-[-10%] right-[-15%] md:right-[-10%] w-96 h-96 md:w-[50vw] md:h-[50vw] rounded-full bg-gradient-to-br from-cyan-500 to-emerald-600 blur-[80px] md:blur-[120px] animate-pulse-slow pointer-events-none" style="animation-delay: 4s;"></div>
 
     <header class="w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center z-10">
         <div class="code-font text-xl font-bold tracking-tight bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
@@ -45,23 +55,24 @@
     </header>
 
     <main class="flex-grow flex items-center justify-center px-4 sm:px-6 py-12 z-10">
-        <div class="max-w-3xl w-full text-center space-y-8">
+        <div class="max-w-3xl w-full text-center space-y-6 sm:space-y-8">
             
-            <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-violet-500/10 to-cyan-500/10 border border-violet-500/20 px-4 py-2 rounded-full text-sm font-medium text-violet-300">
+            <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-violet-500/10 to-cyan-500/10 border border-violet-500/30 md:border-violet-500/20 px-4 py-2 rounded-full text-xs sm:text-sm font-medium text-violet-300">
                 <span>✨ Innovación de Próxima Generación</span>
             </div>
 
-            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
-                Ideas mas allá de los limites con la<span class="bg-gradient-to-r from-violet-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent"> arquitectura del futuro</span>.
+            <!-- Textos ajustados en tamaño y espaciado (leading) -->
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.25] md:leading-[1.15]">
+                Ideas más allá de los límites con la <span class="bg-gradient-to-r from-violet-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">arquitectura del futuro</span>.
             </h1>
 
-            <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed">
+            <p class="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mx-auto font-normal leading-relaxed">
                 Donde la lógica se encuentra con la innovación. Desarrollo de software avanzado y soluciones especializadas con Inteligencia Artificial.
             </p>
 
-            <div class="pt-4">
+            <div class="pt-2 sm:pt-4">
                 <a href="mailto:mateoespit@mateedev.com?subject=Propuesta%20de%20Proyecto%20-%20Innovaci%C3%B3n&body=Hola%20Mateo%2C%20vi%20tu%20p%C3%A1gina%20y%20me%20gustar%C3%ADa%20que%20habl%C3%A1ramos%20sobre%20una%20idea%20que%20tengo..." 
-                   class="group inline-flex items-center justify-center space-x-3 bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white font-semibold px-8 py-4 rounded-xl shadow-lg shadow-violet-900/30 hover:shadow-cyan-500/20 transition-all duration-300 transform hover:-translate-y-0.5">
+                   class="group inline-flex items-center justify-center space-x-3 bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-500 hover:to-cyan-500 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg shadow-violet-900/30 hover:shadow-cyan-500/20 transition-all duration-300 transform hover:-translate-y-0.5">
                     <span>Hablemos de tu idea</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -69,12 +80,12 @@
                 </a>
             </div>
 
-            <div class="pt-8 max-w-md mx-auto">
-                <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 rounded-xl p-4 text-left text-xs code-font text-slate-500 flex items-center justify-between shadow-xl">
+            <div class="pt-6 sm:pt-8 max-w-md mx-auto">
+                <div class="bg-slate-900/60 md:bg-slate-900/40 backdrop-blur-md border border-slate-800/80 md:border-slate-800/60 rounded-xl p-4 text-left text-[11px] sm:text-xs code-font text-slate-500 flex items-center justify-between shadow-xl">
                     <div>
                         <span class="text-violet-400">const</span> stack = [<span class="text-emerald-400">'Software'</span>, <span class="text-cyan-400">'IA'</span>, <span class="text-violet-400">'Innovación'</span>];
                     </div>
-                    <div class="text-[10px] bg-slate-800/50 px-2 py-0.5 rounded text-slate-400 border border-slate-700/50">
+                    <div class="text-[10px] bg-slate-800/80 md:bg-slate-800/50 px-2 py-0.5 rounded text-slate-400 border border-slate-700/50">
                         status: active
                     </div>
                 </div>
@@ -83,7 +94,7 @@
         </div>
     </main>
 
-    <footer class="w-full max-w-7xl mx-auto px-6 py-6 text-center text-xs text-slate-600 z-10 border-t border-slate-800/50">
+    <footer class="w-full max-w-7xl mx-auto px-6 py-6 text-center text-xs text-slate-500 z-10 border-t border-slate-800/50">
         <p>&copy; 2026 mateedev.com. Construyendo el futuro línea a línea.</p>
     </footer>
 
