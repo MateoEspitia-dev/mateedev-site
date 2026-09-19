@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -15,6 +15,28 @@
         }
         .code-font {
             font-family: 'JetBrains Mono', monospace;
+        }
+        .gamer-font {
+            font-family: 'Silkscreen', 'Press Start 2P', monospace;
+            letter-spacing: 0.06em;
+        }
+        @keyframes gamerNeonGlow {
+            0%, 100% {
+                text-shadow: 0 0 6px rgba(34, 211, 238, 0.8), 0 0 16px rgba(6, 182, 212, 0.4);
+            }
+            50% {
+                text-shadow: 0 0 10px rgba(56, 189, 248, 1), 0 0 24px rgba(14, 165, 233, 0.6);
+            }
+        }
+        .gamer-glow {
+            animation: gamerNeonGlow 3s ease-in-out infinite;
+        }
+        @keyframes cursorBlink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        .gamer-cursor {
+            animation: cursorBlink 0.9s infinite;
         }
         @keyframes pulse-slow {
             0%, 100% { transform: scale(1); opacity: 0.2; }
@@ -97,6 +119,109 @@
     <footer class="w-full max-w-7xl mx-auto px-6 py-6 text-center text-xs text-slate-500 z-10 border-t border-slate-800/50">
         <p>&copy; 2026 mateedev.com. Construyendo el futuro línea a línea.</p>
     </footer>
+
+    <!-- ========================================================
+         RECUADRO MINIMALISTA DE ACTUALIZACIÓN (VIDEO GAMER)
+    ======================================================== -->
+    <aside id="update-banner" aria-label="Aviso de actualización en video" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 select-none">
+        <!-- Modo Minimizado (Pill compacto abajo a la derecha) -->
+        <div id="banner-minimized" class="hidden flex items-center gap-2.5 bg-slate-950/90 border border-cyan-500/40 backdrop-blur-xl px-4 py-2 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.3)] cursor-pointer hover:scale-105 transition-all text-xs" title="Clic para ver el recuadro completo">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span class="gamer-font text-cyan-300 text-[10px] tracking-wider uppercase">[VIDEO EN DESARROLLO]</span>
+            <button id="banner-expand-btn" class="text-slate-400 hover:text-white p-0.5 rounded" title="Expandir" aria-label="Expandir aviso">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modo Expandido (Recuadro abajo a la derecha) -->
+        <div id="banner-expanded" class="relative w-[90vw] sm:w-[380px] md:w-[420px] bg-slate-950/95 backdrop-blur-2xl border-2 border-cyan-500/40 hover:border-cyan-400 transition-all duration-300 rounded-2xl p-2.5 shadow-[0_15px_45px_rgba(0,0,0,0.85)]">
+            <!-- Contenedor del Video -->
+            <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-lg">
+                <video src="./SpideyDev.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                
+                <!-- Botones discretos en la esquina superior derecha -->
+                <div class="absolute top-2.5 right-2.5 z-20 flex items-center gap-1.5">
+                    <button id="banner-minimize-btn" class="bg-black/60 hover:bg-black/90 text-white/80 hover:text-white p-1.5 rounded-full backdrop-blur-md border border-white/15 transition-all shadow-md hover:scale-110" title="Minimizar recuadro" aria-label="Minimizar recuadro">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/>
+                        </svg>
+                    </button>
+                    <button id="banner-close-btn" class="bg-black/60 hover:bg-red-950/80 text-white/80 hover:text-red-400 p-1.5 rounded-full backdrop-blur-md border border-white/15 hover:border-red-500/40 transition-all shadow-md hover:scale-110" title="Cerrar aviso" aria-label="Cerrar aviso">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Letrero Minimalista con Fuente Gamer -->
+            <div class="mt-2.5 px-3 py-2 bg-black/70 border border-cyan-400/30 rounded-xl backdrop-blur-md flex items-center justify-center gap-2.5 text-center shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping shrink-0"></span>
+                <p class="gamer-font gamer-glow text-cyan-300 text-[10px] sm:text-[11px] leading-relaxed tracking-wider uppercase">
+                    esta página está desarrollándose en estos momentos, ya pronto estará un poco mejor
+                    <span class="gamer-cursor inline-block w-1.5 h-3 bg-cyan-400 ml-1 align-middle"></span>
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        (function() {
+            const STORAGE_KEY = 'mateedev_spidey_banner_dismissed';
+            const banner = document.getElementById('update-banner');
+            const expanded = document.getElementById('banner-expanded');
+            const minimized = document.getElementById('banner-minimized');
+            const minimizeBtn = document.getElementById('banner-minimize-btn');
+            const expandBtn = document.getElementById('banner-expand-btn');
+            const closeBtn = document.getElementById('banner-close-btn');
+
+            if (sessionStorage.getItem(STORAGE_KEY) === 'true') {
+                if (banner) banner.style.display = 'none';
+                return;
+            }
+
+            function setMinimized(isMin) {
+                if (isMin) {
+                    expanded.classList.add('hidden');
+                    minimized.classList.remove('hidden');
+                } else {
+                    minimized.classList.add('hidden');
+                    expanded.classList.remove('hidden');
+                }
+            }
+
+            if (minimizeBtn) {
+                minimizeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    setMinimized(true);
+                });
+            }
+
+            if (minimized) {
+                minimized.addEventListener('click', function() {
+                    setMinimized(false);
+                });
+            }
+
+            if (expandBtn) {
+                expandBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    setMinimized(false);
+                });
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (banner) banner.style.display = 'none';
+                    sessionStorage.setItem(STORAGE_KEY, 'true');
+                });
+            }
+        })();
+    </script>
 
 </body>
 </html>
