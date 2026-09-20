@@ -1,14 +1,25 @@
-import React from 'react';
-import { X, Check, MessageSquare, Shield, Clock, HelpCircle, ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Check, MessageSquare, Shield, Clock, HelpCircle, ArrowUpRight, ExternalLink, Key, Copy } from 'lucide-react';
 import { ProposalItem } from '../types';
+import { SecuritySession } from '../hooks/useSecurityAccess';
+import { buildDemoUrl } from '../utils/token';
 
 interface ProductModalProps {
   item: ProposalItem | null;
+  session?: SecuritySession | null;
   onClose: () => void;
 }
 
-export const ProductModal: React.FC<ProductModalProps> = ({ item, onClose }) => {
+export const ProductModal: React.FC<ProductModalProps> = ({ item, session = null, onClose }) => {
+  const [copiedPassword, setCopiedPassword] = useState(false);
+
   if (!item) return null;
+
+  const handleCopyPassword = (pwd: string) => {
+    navigator.clipboard.writeText(pwd);
+    setCopiedPassword(true);
+    setTimeout(() => setCopiedPassword(false), 2500);
+  };
 
   const whatsappMessage = encodeURIComponent(
     `Hola Mateo, estuve viendo la propuesta de "${item.title}" en mateedev.com y me gustaría cotizar e implementar este servicio para mi negocio.`
@@ -20,6 +31,8 @@ export const ProductModal: React.FC<ProductModalProps> = ({ item, onClose }) => 
     `Hola Mateo,\n\nVi la propuesta de ${item.title} (${item.price} ${item.billingPeriod}) en mateedev.com y estoy interesado en conocer los pasos de implementación para mi empresa.\n\nSaludos!`
   );
   const emailUrl = `mailto:mateoespit@mateedev.com?subject=${emailSubject}&body=${emailBody}`;
+
+  const liveDemoUrl = item.demoUrl ? buildDemoUrl(item.demoUrl, session) : null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-fade-in">
@@ -33,7 +46,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ item, onClose }) => 
         {/* Botón de cerrar */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-full bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors"
+          className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-full bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors z-20 cursor-pointer"
           title="Cerrar modal"
         >
           <X className="w-5 h-5" />
@@ -59,6 +72,71 @@ export const ProductModal: React.FC<ProductModalProps> = ({ item, onClose }) => 
             {item.price} <span className="text-slate-400 text-sm font-normal">{item.billingPeriod}</span>
           </p>
         </div>
+
+        {/* Captura de pantalla del sistema si existe */}
+        {item.image && (
+          <div className="mt-5 rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-black/60 aspect-video relative group">
+            <img
+              src={item.image}
+              alt={`Captura de pantalla de ${item.title}`}
+              className="w-full h-full object-cover object-top"
+            />
+            {liveDemoUrl && (
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <a
+                  href={liveDemoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg transform hover:scale-105 transition-all"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Probar Demo en Vivo</span>
+                </a>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Banner de Tienda Demo Activa con Clave */}
+        {item.demoPassword && (
+          <div className="mt-5 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+                <Key className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="text-white text-xs font-bold flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Tienda de Demostración Activa</span>
+                </p>
+                <p className="text-slate-300 text-xs mt-0.5">
+                  Ingresa con la clave: <code className="px-2 py-0.5 rounded bg-slate-900 border border-emerald-500/40 text-emerald-300 font-mono font-bold">{item.demoPassword}</code>
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={() => handleCopyPassword(item.demoPassword!)}
+                className="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-xs text-slate-200 hover:text-white flex items-center justify-center gap-1.5 transition cursor-pointer font-medium"
+              >
+                <Copy className="w-3.5 h-3.5 text-emerald-400" />
+                <span>{copiedPassword ? '¡Copiada!' : 'Copiar Clave'}</span>
+              </button>
+              {item.demoUrl && (
+                <a
+                  href={item.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold flex items-center justify-center gap-1.5 transition shadow-md cursor-pointer"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Ir a Tienda</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Resumen */}
         <div className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed border-t border-slate-800/80 pt-4">
@@ -91,7 +169,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ item, onClose }) => 
           </ul>
         </div>
 
-        {/* Ficha túcnica y SLA */}
+        {/* Ficha técnica y SLA */}
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           <div className="p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
             <span className="text-slate-400 flex items-center gap-1.5 font-mono mb-1">
@@ -110,6 +188,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({ item, onClose }) => 
 
         {/* Botones de acción directa */}
         <div className="mt-7 pt-5 border-t border-slate-800 flex flex-col sm:flex-row items-center gap-3">
+          {liveDemoUrl && (
+            <a
+              href={liveDemoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-extrabold py-3 px-5 rounded-xl shadow-lg shadow-cyan-950/40 transition-all hover:scale-[1.02]"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>Abrir Demo en Vivo</span>
+            </a>
+          )}
+
           <a
             href={whatsappUrl}
             target="_blank"

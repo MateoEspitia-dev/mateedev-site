@@ -25,10 +25,11 @@ export const ProposalsCatalog: React.FC = () => {
 
   const categories = [
     { id: 'all', label: 'Todos los Productos' },
-    { id: 'erp', label: 'Software Libre / Odoo' },
+    { id: 'ecommerce', label: 'E-Commerce & CMS' },
+    { id: 'erp', label: 'Software Libre' },
+    { id: 'custom', label: 'Software a Medida & SaaS' },
     { id: 'ai', label: 'Agentes IA & WhatsApp' },
     { id: 'cloud', label: 'Cloud & Mantenimiento' },
-    { id: 'custom', label: 'Software a Medida' },
   ];
 
   const filteredItems = selectedCategory === 'all'
@@ -198,6 +199,7 @@ export const ProposalsCatalog: React.FC = () => {
       {isUnlocked && (
         <ProductModal
           item={activeModalItem}
+          session={session}
           onClose={() => setActiveModalItem(null)}
         />
       )}
